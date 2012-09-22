@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__="Serg"
 __date__ ="$22.09.2012 21:40:55$"
-
+import sys
 #базовый класс для полей игры (поле игрока и копия поля противника, к-я заполняется по ходу игры)
 
 class gameField:
@@ -16,9 +16,9 @@ class gameField:
 
     def __init__(self):
         #конструктор поля проходится по всему массиву клеток и заполняет их CELLTYPE_NONE
-        for cell in self._field.flat:
-            cell = CELLTYPE_NONE;
-        return self;
+            for x in range(sys.getsizeof(self._field)):
+                for y in range(sys.getsizeof(self._field[x])):
+                    self._field[x][y] = self.CELLTYPE.NONE;
     
     def getValueByCoords(self,x=0,y=0):
         return self._field[x][y]

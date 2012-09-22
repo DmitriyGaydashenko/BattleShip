@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #Здесь определён класс User - класс для представления пользователя, будь он клиент или сервер
 __author__="Serg"
 __date__ ="$22.09.2012 23:50:26$"
@@ -6,12 +7,12 @@ from enemyGameField import enemyGameField
 
 class user:
     playerName = "";#имя/ник игрока
-    __isServer = false;
-    network = null#TODO:network wrapper
+    __isServer = False;
+    network = 0 #TODO:network wrapper
     gameField = userGameField()
     enemyField = enemyGameField()
     
-    def __init__(self,playerName="unnamedPlayer",serverMode=false,netWrapper=null):
+    def __init__(self,playerName="unnamedPlayer",serverMode=False,netWrapper=0):
         self.playerName = playerName
         self.isServer = serverMode
         self.network = netWrapper
