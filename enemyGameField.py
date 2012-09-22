@@ -5,5 +5,6 @@ from gameFields import gameField
 
 class enemyGameField(gameField):
     def __init__(self):
-            for cell in self._field.flat:
-                cell = CELLTYPE_NONE;
+            for x in range(len(self._field)):
+                for y in range(len(self._field[x])):
+                    self._field[x][y] = self.CELLTYPE_NONE;
