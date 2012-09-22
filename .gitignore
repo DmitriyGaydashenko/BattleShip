@@ -15,6 +15,7 @@ develop-eggs
 
 #netbeans
 nbproject
+setup.py
 
 # Installer logs
 pip-log.txt
