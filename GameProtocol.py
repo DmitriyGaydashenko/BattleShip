@@ -4,7 +4,7 @@ __author__="Dmitriy"
 __date__ ="$23.09.2012 01:18:26$"
 import Data
 import Shot
-import user
+from user import User
 import ShotResponse
 import json
 class GameProtocol :
@@ -12,7 +12,7 @@ class GameProtocol :
     def __init__(self, user):
         ip = ""
         # get server IP if player is't server
-        if(user.isServer()) :
+        if(user.isServer) :
             ip = '127.0.0.1'
         else :
             ip = raw_input("Enter server IP\n")
