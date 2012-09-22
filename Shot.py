@@ -12,5 +12,3 @@ class Shot(Data):
         return self.__y
     def toString(self):
         return [self._className, self.__x, self.__y]
-s = Shot(-1, 2)
-print (s.toString())

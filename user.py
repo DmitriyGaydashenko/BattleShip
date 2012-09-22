@@ -7,7 +7,7 @@ from enemyGameField import enemyGameField
 class user:
     playerName = "";#имя/ник игрока
     __isServer = false;
-    network = null
+    network = null#TODO:network wrapper
     gameField = userGameField()
     enemyField = enemyGameField()
     
@@ -17,7 +17,8 @@ class user:
         self.network = netWrapper
         return;
     def onShot(self,enemyShot):
-
+        shotResult = this.gameField.processShot(this.gameField,enemyShot);
+        #shotResult отвечает константой CELLTYPE_* из gameFields - это новое состояние клетки
         return;
     def makeShot(self):
 
