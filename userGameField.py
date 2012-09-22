@@ -14,8 +14,8 @@ class userGameField(gameField):
                 for y in range(len(self._field[x])):
                     self._field[x][y] = random.choice([self.CELLTYPE_NONE,self.CELLTYPE_ALIVESHIP]);
     def processShot(self,enemyShot):
-        x = enemyShot.getX(enemyShot);
-        y = enemyShot.getY(enemyShot);
+        x = enemyShot.getX();
+        y = enemyShot.getY();
         if self._field[x][y] == self.CELLTYPE_NONE:
             self._field[x][y] = CELLTYPE_SHOOTED_CELL
         elif self._field[x][y] ==  self.ALIVESHIP:
