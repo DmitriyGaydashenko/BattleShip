@@ -20,6 +20,9 @@ setup.py
 # Installer logs
 pip-log.txt
 
+#netbeans
+nbproject/
+
 # Unit test / coverage reports
 .coverage
 .tox
