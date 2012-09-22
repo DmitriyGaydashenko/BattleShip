@@ -13,6 +13,9 @@ sdist
 develop-eggs
 .installed.cfg
 
+#netbeans
+nbproject
+
 # Installer logs
 pip-log.txt
 
