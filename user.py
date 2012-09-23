@@ -34,6 +34,10 @@ class User:
     def makeShot(self):
         x=-1
         y=-1
+        print "Your field: \n"
+        self.gameField.friendlyPrint();
+        print "\n Enemy field: \n"
+        self.enemyField.friendlyPrint();
         while self.gameField[x][y]<>0 or x==-1 or y==-1: #проверка, чтобы туда действительно можно было стрелять
             if x==-1 or y==-1 or x>self.gameField.getSize(0) or y>self.gameField.getSize(1):
                 continue
