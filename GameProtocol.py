@@ -10,24 +10,38 @@ import json
 class GameProtocol :
     __socket = 0
     def __init__(self, user):
-        ip = ""
+        self.__socket = socket(AF_INET, SOCK_STREAM)
         # get server IP if player is't server
         if(user.isServer) :
+            self.__socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+            print("Please wait, connecting..")
             ip = '127.0.0.1'
+            self.__socket.bind((ip, 1234))
+            self.__socket.listen(1)
+            conn = self.__socket.accept()# open connection
+            data = conn.recv()
+            if(data[0] == "Connect?"):
+                conn.send(json.encoder("OK"))
+                print("Connected")
+            conn.closed()
         else :
             ip = raw_input("Enter server IP\n")
+            print("Please wait, connecting..")
+            self.__socket.connect((ip, 1234))
+            self.__socket.send(json.encoder("Connect?"))
+            data = json.decoder(self.__socket.recv())
+            if(data[0] == "OK"):
+                print("Connected")
         #socket configuration
-        self.__socket = socket(AF_INET, SOCK_STREAM)
-        self.__socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         #set connecting IP and port
-        self.__socket.bind((ip, 1234))
     def send(self, data):
-        conn = self.__socket.accept()# open connection
-        conn.send(json.encoder(data))# decode data and send it #fix: json.DEcoder
+        conn, addr = self.__socket.accept()# open connection
+        conn.send(json.encoder(data))# encode data and send it
         conn.close() #Important : close connection
     def recive(self):
+        self.__socket.listen(1)
         conn = self.__socket.accept()# open connection
-        data = json.encoder(conn.recv()) # receive data and encode it 
+        data = json.decoder(conn.recv()) # receive data and decode it 
         conn.close()# close connection
         resultingData = 0
         #define received data type
