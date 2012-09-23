@@ -16,16 +16,19 @@ class gameField:
 
     def __init__(self):
         #конструктор поля проходится по всему массиву клеток и заполняет их CELLTYPE_NONE
-            for x in range(sys.getsizeof(self._field)):
-                for y in range(sys.getsizeof(self._field[x])):
-                    self._field[x][y] = self.CELLTYPE.NONE;
+            for x in range(self._sizeX):
+                for y in range(self._sizeY):
+                    self._field[x][y] = self.CELLTYPE_NONE;
     
     def getValueByCoords(self,x=0,y=0):
-        return self._field[x][y]
+        return self._field[int(x)][int(y)]
 
     def setValueByCoords(self,x=0,y=0,value=0):
-        self._field[x][y] = value;
-        return self._field[x][y];
+        self._field[int(x)][int(y)] = int(value);
+        return self._field[int(x)][int(y)];
+    
+    def getByCoords(self,x,y):#псевдоним
+        return self.getValueByCoords(x,y)
 
 #getSize по параметру sign(0/1) возвращает x или y измерение поля
     def getSize(self,sign=0):
@@ -35,11 +38,11 @@ class gameField:
             return self._sizeY
 
     def friendlyPrint(self):
-        for y in range(sys.getsizeof(self._field)):
-            print "\n"
-            for x in range(-1,sys.getsizeof(self._field[y])):
-                if x==-1:
-                    print "| |"
-                print " "+self._field[x][y]+" "
+        s=""
+        for y in range(self._sizeY):
+            print s
+            s = ""
+            for x in range(self._sizeX):
+                s+= " {0} ".format(self._field[x][y])
 
 

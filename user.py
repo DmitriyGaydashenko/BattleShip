@@ -4,6 +4,7 @@ __author__="Serg"
 __date__ ="$22.09.2012 23:50:26$"
 from userGameField import userGameField
 from enemyGameField import enemyGameField
+from GameProtocol import netPackage
 
 class User:
     playerName = "";#имя/ник игрока
@@ -11,6 +12,7 @@ class User:
     __isLoose = False;
     network = 0 #TODO:network wrapper
     gameField = userGameField()
+    gameField.randomInit()
     enemyField = enemyGameField()
     
     def __init__(self,playerName="unnamedPlayer",serverMode=False):
@@ -19,16 +21,15 @@ class User:
         return;
     def onLoose(self):
         self.__isLoose = True;
-        print "\nYou loose!\n"
     
     def onShot(self,enemyShot):
-        shotResult = this.gameField.processShot(enemyShot);
+        shotResult = self.gameField.processShot(enemyShot);
         #shotResult отвечает константой CELLTYPE_* из gameFields - это новое состояние клетки
         print "Enemy shot("+enemyShot.getX()+","+enemyShot.getY()+") result: "+{
-        gameField.CELLTYPE_SHOOTED_CELL: "empty cell",
-        gameField.CELLTYPE_SHOOTED_SHIP: "ship shooted"
+        self.gameField.CELLTYPE_SHOOTED_CELL: "empty cell",
+        self.gameField.CELLTYPE_SHOOTED_SHIP: "ship shooted"
         }.get(shotResult);
-        if gameField.checkAlive() == False:
+        if self.gameField.checkAlive() == False:
             self.onLoose();
         
     def makeShot(self):
@@ -38,17 +39,18 @@ class User:
         self.gameField.friendlyPrint();
         print "\n Enemy field: \n"
         self.enemyField.friendlyPrint();
-        while self.gameField[x][y]<>0 or x==-1 or y==-1: #проверка, чтобы туда действительно можно было стрелять
-            if x==-1 or y==-1 or x>self.gameField.getSize(0) or y>self.gameField.getSize(1):
+        while x==-1 or y==-1 or self.enemyField.getByCoords(int(x),int(y))!=0: #проверка, чтобы туда действительно можно было стрелять
+            if x>self.enemyField.getSize(0) or y>self.enemyField.getSize(1):
                 continue
-            if(self.gameField[x][y]==2):
+            if(self.enemyField.getByCoords(x,y)==2):
                 print "There we's already shooted. Retry...\n"
-            if(self.gameField[x][y]==3):
+            if(self.enemyField.getByCoords(x,y)==3):
                 print "There we's already shooted and there was a ship. Retry...\n"
-            x = raw_input("Your shot. X = ")
+            x = raw_input("X = ")
             y = raw_input("Y = ")
-        shot = shot(x,y);
-        network.send(shot);#всё сразу же пошло в сеть
+        self.network.send(netPackage(netPackage.NPTYPE_SHOT).jsonize({"x":x,"y":y}));#всё сразу же пошло в сеть
+        shotResponse = self.network.recive()
+        self.enemyField.setValueByCoords(x,y, shotResponse.getShotState());
         return;
     def assignNetworkWrapper(self,network):
         self.network = network

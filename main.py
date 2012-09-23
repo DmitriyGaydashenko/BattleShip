@@ -21,5 +21,19 @@ if __name__ == "__main__":
     userObj = User(name,__isServer)
     networkWrapper = GameProtocol(userObj)
     userObj.assignNetworkWrapper(networkWrapper)#теперь пользователь подключён к сети
+    firstIteration = True
+    while True:
+        #основной игровой цикл
+        if userObj.isLoose==True:
+            break;
+        if firstIteration and userObj.isServer==True:
+            userObj.makeShot()
+        else:
+            userObj.makeShot()
+        enemyShot = networkWrapper.recive()
+        userObj.onShot(enemyShot)
 
-
+    if userObj.isLoose==True:
+        print "You loose!"
+    else:
+        print "You win!"
