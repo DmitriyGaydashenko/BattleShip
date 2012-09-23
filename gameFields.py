@@ -34,4 +34,12 @@ class gameField:
         else:
             return self._sizeY
 
+    def friendlyPrint(self):
+        for y in range(sys.getsizeof(self._field)):
+            print "\n"
+            for x in range(-1,sys.getsizeof(self._field[y])):
+                if x==-1:
+                    print "| |"
+                print " "+self._field[x][y]+" "
+
 

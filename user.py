@@ -17,6 +17,10 @@ class User:
         self.playerName = playerName
         self.isServer = serverMode
         return;
+    def onLoose(self):
+        self.__isLoose = True;
+        print "\nYou loose!\n"
+    
     def onShot(self,enemyShot):
         shotResult = this.gameField.processShot(enemyShot);
         #shotResult отвечает константой CELLTYPE_* из gameFields - это новое состояние клетки
@@ -24,6 +28,9 @@ class User:
         gameField.CELLTYPE_SHOOTED_CELL: "empty cell",
         gameField.CELLTYPE_SHOOTED_SHIP: "ship shooted"
         }.get(shotResult);
+        if gameField.checkAlive() == False:
+            self.onLoose();
+        
     def makeShot(self):
         x=-1
         y=-1

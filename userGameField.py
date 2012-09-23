@@ -24,4 +24,10 @@ class userGameField(gameField):
             self._field[x][y] = CELLTYPE_SHOOTED_CELL
             #ошибки замалчиваются
         return self._field[x][y];
+    def checkAlive(self):
+        for x in range(len(self._field)):
+                for y in range(len(self._field[x])):
+                    if(self._field[x][y]==self.CELLTYPE_ALIVESHIP):
+                        return True;
+        return False;
         
