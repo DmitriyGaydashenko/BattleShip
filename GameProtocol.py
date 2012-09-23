@@ -7,6 +7,19 @@ import Shot
 from user import User
 import ShotResponse
 import json
+import time
+
+class netPackage:
+    NPTYPE_GENERIC = 0
+    NPTYPE_CONNECT = 1
+    NPTYPE_OK = 200
+    __pType = NPTYPE_GENERIC
+    def jsonize(self,data):
+        return json.dumps({"type":self.__pType,"data":data})
+    def __init__(self,type=NPTYPE_GENERIC):
+        self.__pType = type
+
+
 class GameProtocol :
     __socket = 0
     def __init__(self, user):
@@ -14,24 +27,24 @@ class GameProtocol :
         # get server IP if player is't server
         if(user.isServer) :
             self.__socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+            ip = raw_input("Enter server IP\n")
             print("Please wait, connecting..")
-            ip = '127.0.0.1'
             self.__socket.bind((ip, 1234))
             self.__socket.listen(1)
-            conn = self.__socket.accept()# open connection
-            data = conn.recv()
-            if(data[0] == "Connect?"):
-                conn.send(json.encoder("OK"))
-                print("Connected")
-            conn.closed()
+            conn, arrn = self.__socket.accept()# open connection
+            data = json.loads(conn.recv(1024))
+            if(data["type"] == netPackage.NPTYPE_CONNECT):
+                conn.send(netPackage(netPackage.NPTYPE_OK).jsonize({"timestamp":time.time()}))
+                print "Connected. Delta time = %.3f"%(time.time()-float(data["data"]["timestamp"]))
+            conn.close()
         else :
             ip = raw_input("Enter server IP\n")
             print("Please wait, connecting..")
             self.__socket.connect((ip, 1234))
-            self.__socket.send(json.encoder("Connect?"))
-            data = json.decoder(self.__socket.recv())
-            if(data[0] == "OK"):
-                print("Connected")
+            self.__socket.send(netPackage(netPackage.NPTYPE_CONNECT).jsonize({"timestamp":time.time()}))
+            data = json.loads(self.__socket.recv(1024))
+            if(data["type"] == netPackage.NPTYPE_OK):
+                print "Connected. Delta time = %.3f"%(time.time()-float(data["data"]["timestamp"]))
         #socket configuration
         #set connecting IP and port
     def send(self, data):
