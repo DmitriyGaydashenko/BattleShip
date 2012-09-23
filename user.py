@@ -20,9 +20,24 @@ class User:
     def onShot(self,enemyShot):
         shotResult = this.gameField.processShot(enemyShot);
         #shotResult отвечает константой CELLTYPE_* из gameFields - это новое состояние клетки
-        return;
+        print "Enemy shot("+enemyShot.getX()+","+enemyShot.getY()+") result: "+{
+        gameField.CELLTYPE_SHOOTED_CELL: "empty cell",
+        gameField.CELLTYPE_SHOOTED_SHIP: "ship shooted"
+        }.get(shotResult);
     def makeShot(self):
-
+        x=-1
+        y=-1
+        while self.gameField[x][y]<>0 or x==-1 or y==-1: #проверка, чтобы туда действительно можно было стрелять
+            if x==-1 or y==-1 or x>self.gameField.getSize(0) or y>self.gameField.getSize(1):
+                continue
+            if(self.gameField[x][y]==2):
+                print "There we's already shooted. Retry...\n"
+            if(self.gameField[x][y]==3):
+                print "There we's already shooted and there was a ship. Retry...\n"
+            x = raw_input("Your shot. X = ")
+            y = raw_input("Y = ")
+        shot = shot(x,y);
+        network.send(shot);#всё сразу же пошло в сеть
         return;
     def assignNetworkWrapper(self,network):
         self.network = network

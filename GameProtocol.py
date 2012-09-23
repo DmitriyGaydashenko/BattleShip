@@ -23,7 +23,7 @@ class GameProtocol :
         self.__socket.bind((ip, 1234))
     def send(self, data):
         conn = self.__socket.accept()# open connection
-        conn.send(json.decoder(data))# decode data and send it
+        conn.send(json.encoder(data))# decode data and send it #fix: json.DEcoder
         conn.close() #Important : close connection
     def recive(self):
         conn = self.__socket.accept()# open connection

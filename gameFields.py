@@ -26,3 +26,12 @@ class gameField:
     def setValueByCoords(self,x=0,y=0,value=0):
         self._field[x][y] = value;
         return self._field[x][y];
+
+#getSize по параметру sign(0/1) возвращает x или y измерение поля
+    def getSize(self,sign=0):
+        if sign==0:
+            return self._sizeX
+        else:
+            return self._sizeY
+
+
